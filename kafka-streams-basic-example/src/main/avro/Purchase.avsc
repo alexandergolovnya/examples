@@ -1,0 +1,15 @@
+{
+  "namespace": "com.example.model",
+  "type": "record",
+  "name": "Purchase",
+  "fields": [
+    {"name": "purchaseId", "type": "string"},
+    {"name": "purchaseTimestamp", "type": "long"},
+    {"name": "userId", "type": "string"},
+    {"name": "productId", "type": "string"},
+    {"name": "productName", "type": "string"},
+    {"name": "productCategory", "type": "string"},
+    {"name": "productPrice", "type": "double"},
+    {"name": "quantity", "type": "double"}
+  ]
+}
