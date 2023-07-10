@@ -1,0 +1,64 @@
+version: '2'
+services:
+  # infrastructure
+  test-zk:
+    image: 'confluentinc/cp-zookeeper:7.4.0'
+    hostname: test-zk
+    ports:
+      - '2181:2181'
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+  test-kafka:
+    image: 'confluentinc/cp-kafka:7.4.0'
+    hostname: test-kafka
+    depends_on:
+      - test-zk
+    ports:
+      - '29092:29092'
+      - '9092:9092'
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'test-zk:2181'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_DELETE_TOPIC_ENABLE: 'true'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://test-kafka:29092,PLAINTEXT_HOST://localhost:9092'
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+  test-schema-registry:
+    image: 'confluentinc/cp-schema-registry:7.4.0'
+    hostname: test-schema-registry
+    depends_on:
+      - test-zk
+      - test-kafka
+    ports:
+      - '8081:8081'
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_LISTENERS: 'http://0.0.0.0:8081'
+      SCHEMA_REGISTRY_AVRO_COMPATIBILITY_LEVEL: BACKWARD
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'test-kafka:29092'
+  test-kafka-ui:
+    image: 'tchiotludo/akhq:latest'
+    hostname: akhq
+    depends_on:
+      - test-zk
+      - test-kafka
+    ports:
+      - '8090:8080'
+    volumes:
+      - './kafka/application.yml:/app/application.yml'
+
+  # application
+  test-kafka-streams-app:
+      image: 'examples/kafka-streams-example:1.0-SNAPSHOT'
+      hostname: test-kafka-streams-app
+      depends_on:
+      - test-zk
+      - test-kafka
+      environment:
+        - BOOTSTRAP_SERVERS=http://test-kafka:29092
+        - SCHEMA_REGISTRY_URL=http://test-schema-registry:8081
+      ports:
+      - '8080'
