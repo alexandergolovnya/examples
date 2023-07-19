@@ -1,0 +1,8 @@
+version: '2'
+services:
+  # application
+  spring-boot-docker-example:
+    image: 'examples/spring-boot-docker-example:1.0-SNAPSHOT'
+    hostname: spring-boot-docker-example
+    ports:
+      - '9090:9090'
