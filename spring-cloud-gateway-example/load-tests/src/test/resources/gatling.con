@@ -1,0 +1,12 @@
+gatling {
+  core {
+    directory {
+      # Directory to save the simulation results
+      results = "target/gatling/results"
+    }
+  }
+  charts {
+    # Enable or disable chart generation
+    noReports = false
+  }
+}

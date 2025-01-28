@@ -1,0 +1,61 @@
+uri:
+  service:
+    example-api: http://localhost:8091
+
+spring:
+  main:
+    web-application-type: REACTIVE
+  cloud:
+    gateway:
+      default-filters:
+        - CapacityFilter
+      routes:
+        # Proxy all requests
+        - id: default
+          uri: ${uri.service.example-api}
+          predicates:
+            - Path=/**
+
+spring-cloud-gateway:
+  tiers-capacity:
+    1: 10
+    2: 10
+    3: 30
+  clients:
+    - id: test_client_tier_1
+      tier: 1
+    - id: test_client_tier_2
+      tier: 2
+    - id: defaults
+      tier: 3
+
+logging:
+  level:
+    org.springframework: INFO
+
+server:
+  port: 8080
+  shutdown: graceful
+
+management:
+  server:
+    port: 8080
+  endpoints:
+    enabled-by-default: false
+  endpoint:
+    health:
+      enabled: true
+      probes:
+        enabled: true
+    web:
+      exposure:
+        include: health,metrics,bulkhead,ratelimiter,circuitbreaker
+
+redis:
+  threads: 16
+  nettyThreads: 32
+  transportMode: "NIO"
+  connection-minimum-idle-size: 24
+  connection-pool-size: 64
+  nodeAddress: "redis://localhost:6379"
+  client-name: "spring-cloud-gateway-example"

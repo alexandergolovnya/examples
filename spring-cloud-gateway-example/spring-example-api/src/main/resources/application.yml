@@ -1,0 +1,25 @@
+server:
+  port: 8091
+  shutdown: graceful
+
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 10s
+
+logging:
+  level:
+    org.springframework: INFO
+
+management:
+  server:
+    port: 8080
+  endpoints:
+    enabled-by-default: false
+  endpoint:
+    health:
+      enabled: true
+      probes:
+        enabled: true
+    web:
+      exposure:
+        include: health,metrics,bulkhead,ratelimiter,circuitbreaker

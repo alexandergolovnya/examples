@@ -1,0 +1,13 @@
+uri:
+  service:
+    example-api: http://spring-example-api:8080
+
+server:
+  port: 8080
+
+management:
+  server:
+    port: 8080
+
+redis:
+  nodeAddress: "redis://spring-cloud-gateway-redis:6379"

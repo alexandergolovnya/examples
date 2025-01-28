@@ -1,0 +1,24 @@
+---
+version: '2'
+services:
+  spring-cloud-gateway-example:
+    image: spring-cloud-gateway-example:spring-cloud-gateway-NOBUILD
+    hostname: spring-cloud-gateway-example
+    environment:
+      SPRING_PROFILES_ACTIVE: "docker"
+      SPRING_APPLICATION_NAME: "spring_cloud_gateway"
+    ports:
+      - "8090:8080"
+  spring-example-api:
+    image: spring-cloud-gateway-example:spring-example-api-NOBUILD
+    hostname: spring-example-api
+    environment:
+      SPRING_PROFILES_ACTIVE: "docker"
+      SPRING_APPLICATION_NAME: "spring_example_api"
+    ports:
+      - "8091:8080"
+  spring-cloud-gateway-redis:
+    image: arm64v8/redis:6.2.1
+    container_name: spring-cloud-gateway-redis
+    ports:
+      - '6379:6379'

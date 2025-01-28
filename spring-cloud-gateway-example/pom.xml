@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>spring-cloud-gateway-example</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <name>spring-cloud-gateway-example</name>
+    <description>Spring Cloud Gateway with Dynamic Capacity Management</description>
+
+    <modules>
+        <module>spring-cloud-gateway</module>
+        <module>spring-example-api</module>
+    </modules>
+
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <properties>
+        <ci.buildnumber>NOBUILD</ci.buildnumber>
+        <java.image>openjdk:21-jdk</java.image>
+
+        <docker.repository.name>spring-cloud-gateway-example</docker.repository.name>
+        <docker-maven-plugin.version>0.38.1</docker-maven-plugin.version>
+        <docker.basedir>/opt/example-gateway</docker.basedir>
+
+        <java.version>21</java.version>
+        <spring.boot.version>3.3.4</spring.boot.version>
+        <spring-cloud.version>2023.0.3</spring-cloud.version>
+        <springdoc.openapi.webmvc.version>2.5.0</springdoc.openapi.webmvc.version>
+        <lombok.version>1.18.30</lombok.version>
+        <jwt.version>4.4.0</jwt.version>
+        <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
+        <redisson.version>3.22.0</redisson.version>
+        <redisson.spring.data.version>3.37.0</redisson.spring.data.version>
+        <java-dogstatsd-client.version>4.3.0</java-dogstatsd-client.version>
+    </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.11.0</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                        <useIncrementalCompilation>true</useIncrementalCompilation>
+                        <showWarnings>true</showWarnings>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring.boot.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>io.fabric8</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>${docker-maven-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
